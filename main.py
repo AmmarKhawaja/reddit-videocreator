@@ -20,7 +20,9 @@ if __name__ == '__main__':
                     bad_post = True
             if not bad_post:
                 break
-    print(len(post.comments[1].body))
+
+    file_title = "content/" + post.title + " #askreddit #reddit .mp4"
+
     print("Audio Preparing")
     audio_references = ["content/title.mp3", "content/comment0.mp3", "content/comment1.mp3", "content/fullaudio.mp3"]
     all_audio = gTTS(text=post.title + " . . . " + post.comments[0].body + " . . . " + post.comments[1].body, lang="en", slow=False).save(audio_references[3])
@@ -32,8 +34,8 @@ if __name__ == '__main__':
     comment0_audio_duration = AudioFileClip(audio_references[1]).duration
     comment1_audio_duration = AudioFileClip(audio_references[2]).duration
     final_audio = CompositeAudioClip([AudioFileClip(audio_references[0]),
-                                      AudioFileClip(audio_references[1]).set_start(title_audio_duration + 2),
-                                      AudioFileClip(audio_references[2]).set_start(title_audio_duration + comment0_audio_duration + 4)]).set_fps(44100)
+                                      AudioFileClip(audio_references[1]).set_start(title_audio_duration + 1),
+                                      AudioFileClip(audio_references[2]).set_start(title_audio_duration + comment0_audio_duration + 2)]).set_fps(44100)
     print("Audio Ready")
 
     print("Text Preparing")
@@ -53,10 +55,10 @@ if __name__ == '__main__':
 
     print("Compiling Videos")
     finalvideo = CompositeVideoClip([
-        video, background_image, title_text.set_start(0).set_duration(title_audio_duration + 2),
-        comment0_text.set_start(title_audio_duration + 2).set_duration(comment0_audio_duration + 2),
-        comment1_text.set_start(title_audio_duration + comment0_audio_duration + 4).set_duration(comment1_audio_duration + 2)
+        video, background_image, title_text.set_start(0).set_duration(title_audio_duration + 1),
+        comment0_text.set_start(title_audio_duration + 1).set_duration(comment0_audio_duration + 1),
+        comment1_text.set_start(title_audio_duration + comment0_audio_duration + 2).set_duration(comment1_audio_duration + 1)
     ]).set_duration(AudioFileClip("content/finalaudio.mp3").duration)
     print("Compiled Videos")
 
-    finalvideo.write_videofile("content/finalmovie.mp4", fps=30)
+    finalvideo.write_videofile(file_title, fps=30)
